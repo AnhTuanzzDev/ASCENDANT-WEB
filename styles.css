@@ -1,0 +1,817 @@
+/* ================= GLOBAL & SMOOTH SCROLL ================= */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+body {
+  background-color: #f4f4f2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-right: 40px;
+}
+
+/* ================= STICKY HEADER STYLES ================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  background-color: #f2f2ef;
+  border-bottom: 1px solid #e0e0dc;
+  user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.header.is-scrolled {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  height: 100%;
+  border-right: 1px solid #e0e0dc;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  fill: #000;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 100%;
+}
+
+.nav-item {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 16px;
+  text-decoration: none;
+  color: #555555;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Dropdown Menu cho tab NEWS */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f2f2ef;
+  min-width: 180px;
+  list-style: none;
+  border: 1px solid #e0e0dc;
+  border-top: none;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  z-index: 100;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-link {
+  display: block;
+  padding: 12px 18px;
+  text-decoration: none;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-link:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* 2 nút SIGN IN & LOG IN cạnh nút DOWNLOAD */
+.auth-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 16px;
+  color: #333333;
+  text-decoration: none;
+  border-left: 1px solid #e0e0dc;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.auth-nav-btn:hover,
+.auth-nav-btn.is-active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.btn-launch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 24px;
+  background-color: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-launch:hover {
+  opacity: 0.85;
+}
+
+/* ================= SECTIONS TRANG INDEX ================= */
+.page-section {
+  scroll-margin-top: 60px;
+  border-bottom: 1px solid #e0e0dc;
+}
+
+.hero-banner-wrapper {
+  perspective: 1200px;
+  width: 100%;
+  height: calc(100vh - 60px);
+  min-height: 500px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-banner {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  width: 100%;
+  max-width: 1300px;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+
+.banner-bg-1,
+.banner-bg-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.banner-bg-1 {
+  background-image: url('https://i.postimg.cc/dt7Ch15K/0994f664-a822-467d-a855-21ad854982d9.jpg');
+  opacity: 1;
+  z-index: 1;
+}
+
+.banner-bg-2 {
+  background-image: url('https://i.postimg.cc/NfyXKMpk/538b60fd-ff83-4de4-a96e-37a96357c537.jpg');
+  opacity: 0;
+  z-index: 2;
+}
+
+.hero-banner:hover .banner-bg-2 {
+  opacity: 1;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55));
+  z-index: 3;
+  pointer-events: none;
+}
+
+.banner-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(30px);
+  text-align: center;
+  z-index: 4;
+  width: 100%;
+  padding: 0 20px;
+  pointer-events: none;
+}
+
+.banner-title {
+  font-family: 'Cinzel', serif;
+  font-size: 5rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  margin-bottom: 12px;
+}
+
+.banner-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.section-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #111111;
+  margin-bottom: 35px;
+  letter-spacing: 2px;
+}
+
+/* NEWS SLIDE NGANG */
+.news-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.news-switch-tabs {
+  display: inline-flex;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+}
+
+.news-tab-btn {
+  border: none;
+  background-color: transparent;
+  color: #333333;
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.news-tab-btn.is-active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.news-slider-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.news-slider-track {
+  display: flex;
+  width: 200%;
+  transform: translateX(0%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.news-slider-track.is-updates {
+  transform: translateX(-50%);
+}
+
+.news-slide-panel {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0dc;
+  padding: 28px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #000000;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+}
+
+.card-badge {
+  display: inline-block;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111111;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: #555555;
+  line-height: 1.6;
+}
+
+.download-box {
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  padding: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.btn-solid-black {
+  display: inline-block;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 16px 32px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-solid-black:hover {
+  opacity: 0.8;
+}
+
+/* ================= SIGN IN & LOG IN PAGES ================= */
+.auth-page-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  border-bottom: 1px solid #e0e0dc;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #f9f9f7;
+  border: 1px solid #e0e0dc;
+  padding: 42px 36px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.auth-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #111111;
+  text-align: center;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Ô textbox có nền khác nhẹ so với nền trang (#f4f4f2), không lệch tone */
+.floating-field {
+  position: relative;
+  width: 100%;
+  height: 58px;
+  background-color: #eae9e4;
+  border: 1px solid #d6d5ce;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.floating-field.is-focused {
+  background-color: #e4e2da;
+  border-color: #b8b5ab;
+}
+
+/* Chữ bên trong textbox: màu đen, font vuông vức, căn lề trái */
+.floating-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #000000;
+  pointer-events: none;
+  transition: top 0.2s ease, transform 0.2s ease, font-size 0.2s ease, letter-spacing 0.2s ease, color 0.2s ease;
+}
+
+/* Khi đang focus HOẶC ô đã có nội dung nhập: thu nhỏ gọn lên phía trên bên trái (vẫn nằm trong textbox) */
+.floating-field.is-focused .floating-label,
+.floating-field.has-value .floating-label {
+  top: 9px;
+  transform: translateY(0);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #222222;
+}
+
+.floating-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 22px 16px 6px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+/* Hiển thị mật khẩu dạng dấu "*" */
+.floating-input.masked-star {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.floating-field.has-eye .floating-input {
+  padding-right: 46px;
+}
+
+/* Biểu tượng con mắt sát phải: giữ vào để hiện mật khẩu */
+.toggle-password-hold {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 44px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #222222;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.toggle-password-hold:hover,
+.toggle-password-hold.is-revealing {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Underline màu vàng đồng (#d4af37) highlight textbox đang được chọn */
+.field-bronze-bar {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2.5px;
+  background-color: #d4af37;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.floating-field.is-focused .field-bronze-bar {
+  transform: scaleX(1);
+}
+
+.auth-feedback {
+  min-height: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Nút SIGN IN / LOG IN nằm giữa, nền đen tuyền, chữ đồng ánh kim (#c59b52) */
+.auth-submit-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.auth-submit-btn {
+  min-width: 180px;
+  padding: 14px 34px;
+  background-color: #000000;
+  color: #c59b52;
+  border: 1.5px solid #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Hover: đổi thành viền đồng ánh kim, nền trắng, chữ đen */
+.auth-submit-btn:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #c59b52;
+}
+
+.auth-switch-text {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 13px;
+  color: #555555;
+}
+
+.auth-switch-text a {
+  color: #000000;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid #c59b52;
+  padding-bottom: 1px;
+}
+
+.auth-switch-text a:hover {
+  color: #9e7834;
+}
+
+/* ================= CUSTOM PERCENTAGE SCROLLBAR ================= */
+.scroll-track {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100vh;
+  background-color: #ffffff;
+  border-left: 1px solid #000000;
+  z-index: 9999;
+  user-select: none;
+  touch-action: none;
+}
+
+.scroll-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  cursor: grab;
+}
+
+.scroll-thumb:active,
+.scroll-track.is-dragging .scroll-thumb {
+  cursor: grabbing;
+}
+
+.scroll-number {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  color: #000000;
+  background-color: transparent;
+  padding: 4px;
+  border-radius: 4px;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transform: scale(1);
+}
+
+.scroll-track.is-scrolling .scroll-number,
+.scroll-track.is-dragging .scroll-number {
+  transform: scale(1.35);
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+}
+
+.scroll-track.is-highlighting .scroll-number {
+  animation: highlightStop 0.5s ease forwards;
+}
+
+@keyframes highlightStop {
+  0% {
+    transform: scale(1.35);
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+  }
+  45% {
+    transform: scale(1.5);
+    background-color: #000000;
+    color: #ffffff;
+  }
+  100% {
+    transform: scale(1);
+    background-color: transparent;
+    color: #000000;
+    box-shadow: none;
+  }
+}
+
+/* ================= FOOTER STYLES ================= */
+.footer {
+  width: 100%;
+  background-color: #f2f2ef;
+  border-bottom: 1px solid #e0e0dc;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.2fr;
+  width: 100%;
+}
+
+.footer-col {
+  padding: 40px 35px;
+  border-right: 1px solid #e0e0dc;
+}
+
+.footer-col:last-child {
+  border-right: none;
+}
+
+.footer-logo {
+  width: 32px;
+  height: 32px;
+  fill: #000;
+  margin-bottom: 20px;
+}
+
+.footer-slogan {
+  font-size: 15px;
+  color: #333333;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: #888888;
+  letter-spacing: 0.5px;
+}
+
+.footer-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888888;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #333333;
+  font-size: 15px;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-links a:hover {
+  color: #000000;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .grid-3,
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+  .footer-col {
+    border-right: none;
+    border-bottom: 1px solid #e0e0dc;
+  }
+  .download-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .banner-title {
+    font-size: 3rem;
+  }
+  .auth-card {
+    padding: 32px 22px;
+  }
+}

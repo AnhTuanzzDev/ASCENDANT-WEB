@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASCENDANT - Official Website</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================= GLOBAL & SMOOTH SCROLL ================= */
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 0;
+      display: none;
+    }
+
+    body {
+      background-color: #f4f4f2;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-right: 40px;
+    }
+
+    /* ================= STICKY HEADER STYLES ================= */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      background-color: #f2f2ef;
+      border-bottom: 1px solid #e0e0dc;
+      user-select: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .header.is-scrolled {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      height: 100%;
+      border-right: 1px solid #e0e0dc;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      fill: #000;
+    }
+
+    .nav-list {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      height: 100%;
+    }
+
+    .nav-item {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      padding: 0 16px;
+      text-decoration: none;
+      color: #555555;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background-color: transparent;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* Dropdown Menu cho tab NEWS */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #f2f2ef;
+      min-width: 180px;
+      list-style: none;
+      border: 1px solid #e0e0dc;
+      border-top: none;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.25s ease;
+      z-index: 100;
+    }
+
+    .nav-item.dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-link {
+      display: block;
+      padding: 12px 18px;
+      text-decoration: none;
+      color: #555555;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .dropdown-link:hover {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    /* 2 nút SIGN IN & LOG IN cạnh nút DOWNLOAD */
+    .auth-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 0 16px;
+      color: #333333;
+      text-decoration: none;
+      border-left: 1px solid #e0e0dc;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background-color: transparent;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .auth-nav-btn:hover,
+    .auth-nav-btn.active {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    .btn-launch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 0 24px;
+      background-color: #000000;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-launch:hover {
+      opacity: 0.85;
+    }
+
+    /* ================= SECTIONS (CÁC PHẦN NỘI DUNG LIỀN MẠCH) ================= */
+    .page-section {
+      scroll-margin-top: 60px;
+      border-bottom: 1px solid #e0e0dc;
+    }
+
+    /* 1. SECTION HOME & BANNER 3D INTERACTIVE */
+    .hero-banner-wrapper {
+      perspective: 1200px;
+      width: 100%;
+      height: calc(100vh - 60px);
+      min-height: 500px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-banner {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      width: 100%;
+      max-width: 1300px;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+    }
+
+    .banner-bg-1, .banner-bg-2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .banner-bg-1 {
+      background-image: url('https://i.postimg.cc/dt7Ch15K/0994f664-a822-467d-a855-21ad854982d9.jpg');
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .banner-bg-2 {
+      background-image: url('https://i.postimg.cc/NfyXKMpk/538b60fd-ff83-4de4-a96e-37a96357c537.jpg');
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .hero-banner:hover .banner-bg-2 {
+      opacity: 1;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.55));
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .banner-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateZ(30px);
+      text-align: center;
+      z-index: 4;
+      width: 100%;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+
+    .banner-title {
+      font-family: 'Cinzel', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+      margin-bottom: 12px;
+    }
+
+    .banner-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #e0e0e0;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    /* STYLE CHUNG CHO CÁC SECTION BÊN DƯỚI */
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 30px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #111111;
+      margin-bottom: 35px;
+      letter-spacing: 2px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #e0e0dc;
+      padding: 28px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #000000;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+    }
+
+    .card-badge {
+      display: inline-block;
+      background-color: #000000;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111111;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: #555555;
+      line-height: 1.6;
+    }
+
+    .download-box {
+      background-color: #ffffff;
+      border: 1px solid #000000;
+      padding: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .btn-solid-black {
+      display: inline-block;
+      background-color: #000000;
+      color: #ffffff;
+      padding: 16px 32px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-solid-black:hover {
+      opacity: 0.8;
+    }
+
+    /* ================= CUSTOM PERCENTAGE SCROLLBAR ================= */
+    .scroll-track {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 100vh;
+      background-color: #ffffff;
+      border-left: 1px solid #000000;
+      z-index: 9999;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .scroll-thumb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform;
+      cursor: grab;
+    }
+
+    .scroll-thumb:active,
+    .scroll-track.is-dragging .scroll-thumb {
+      cursor: grabbing;
+    }
+
+    .scroll-number {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: #000000;
+      background-color: transparent;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      transform: scale(1);
+    }
+
+    .scroll-track.is-scrolling .scroll-number,
+    .scroll-track.is-dragging .scroll-number {
+      transform: scale(1.25);
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    .scroll-track.is-highlighting .scroll-number {
+      animation: highlightStop 0.5s ease forwards;
+    }
+
+    @keyframes highlightStop {
+      0% {
+        transform: scale(1.25);
+        background-color: #000000;
+        color: #ffffff;
+        box-shadow: 0 0 12px rgba(0,0,0,0.3);
+      }
+      40% {
+        transform: scale(1.45);
+        background-color: #000000;
+        color: #ffffff;
+      }
+      100% {
+        transform: scale(1);
+        background-color: transparent;
+        color: #000000;
+        box-shadow: none;
+      }
+    }
+
+    /* ================= FOOTER STYLES ================= */
+    .footer {
+      width: 100%;
+      background-color: #f2f2ef;
+      border-bottom: 1px solid #e0e0dc;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.2fr;
+      width: 100%;
+    }
+
+    .footer-col {
+      padding: 40px 35px;
+      border-right: 1px solid #e0e0dc;
+    }
+
+    .footer-col:last-child {
+      border-right: none;
+    }
+
+    .footer-logo {
+      width: 32px;
+      height: 32px;
+      fill: #000;
+      margin-bottom: 20px;
+    }
+
+    .footer-slogan {
+      font-size: 15px;
+      color: #333333;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: #888888;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888888;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #333333;
+      font-size: 15px;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: #000000;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .grid-3, .footer-container {
+        grid-template-columns: 1fr;
+      }
+      .footer-col {
+        border-right: none;
+        border-bottom: 1px solid #e0e0dc;
+      }
+      .download-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .banner-title {
+        font-size: 3rem;
+      }
+    }
+    .page-preloader {
+  position: fixed;
+  inset: 0;
+  background-color: #f4f4f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.page-preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Kích thước khung hiển thị 1 frame (nhân 2x cho sắc nét trên màn hình) */
+.cat-sprite {
+  width: 96px;
+  height: 112px;
+  background-image: url('https://i.postimg.cc/MTG4NMnr/black.png');
+  background-repeat: no-repeat;
+  /* 4 cột -> 400%, 5 hàng -> 500% */
+  background-size: 400% 500%;
+  background-position: 0% 0%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.preloader-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #111111;
+}
+  </style>
+</head>
+<body>
+    <!-- PRELOADER SPRITE SHEET MÈO ĐEN -->
+<div class="page-preloader" id="pagePreloader">
+  <div class="preloader-inner">
+    <div class="cat-sprite" id="catSprite" role="img" aria-label="Loading cat animation"></div>
+    <span class="preloader-text">LOADING...</span>
+  </div>
+</div>
+  <!-- ================= HEADER ================= -->
+  <header class="header" id="siteHeader">
+    <div class="header-left">
+      <a href="#home" class="logo-container">
+        <svg class="logo-icon" viewBox="0 0 24 24">
+          <path d="M12 2L2 22h5l3.5-7h3l3.5 7h5L12 2zm0 6l2 4h-4l2-4z"/>
+        </svg>
+      </a>
+
+      <ul class="nav-list">
+        <li class="nav-item"><a href="#home" class="nav-link active">HOME</a></li>
+        <li class="nav-item"><a href="#character" class="nav-link">CHARACTER</a></li>
+        <li class="nav-item dropdown">
+          <a href="#news" class="nav-link">
+            NEWS <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#news" class="dropdown-link">Announcement</a></li>
+            <li><a href="#news" class="dropdown-link">Updates</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="#support" class="nav-link">SUPPORT</a></li>
+      </ul>
+    </div>
+
+    <div class="header-right">
+      <a href="signin.html" class="auth-nav-btn">SIGN IN</a>
+      <a href="login.html" class="auth-nav-btn">LOG IN</a>
+      <a href="#download" class="btn-launch">DOWNLOAD</a>
+    </div>
+  </header>
+
+  <!-- ================= NỘI DUNG TRANG LIỀN MẠCH ================= -->
+  <main>
+    
+    <!-- PHẦN 1: HOME (BANNER 3D INTERACTIVE) -->
+    <section id="home" class="page-section">
+      <div class="hero-banner-wrapper">
+        <a href="#download" class="hero-banner" id="heroBanner">
+          <div class="banner-bg-1"></div>
+          <div class="banner-bg-2"></div>
+          <div class="banner-overlay"></div>
+          <div class="banner-content">
+            <h1 class="banner-title">ASCENDANT</h1>
+            <p class="banner-subtitle">A new journey awaits</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- PHẦN 2: CHARACTER -->
+    <section id="character" class="page-section">
+      <div class="content-container">
+        <span class="section-tag">01 / ROSTER</span>
+        <h2 class="section-heading">CHARACTERS</h2>
+        <div class="grid-3">
+          <div class="card">
+            <span class="card-badge">VANGUARD</span>
+            <h3 class="card-title">Aurelius</h3>
+            <p class="card-desc">Chiến binh tiên phong mang trong mình sức mạnh cổ đại từ đỉnh núi thiêng, chuyên về cận chiến và phòng thủ.</p>
+          </div>
+          <div class="card">
+            <span class="card-badge">ARCANIST</span>
+            <h3 class="card-title">Lyra</h3>
+            <p class="card-desc">Pháp sư điều khiển dòng chảy tinh tú trên bầu trời mây mù, gây sát thương diện rộng từ khoảng cách xa.</p>
+          </div>
+          <div class="card">
+            <span class="card-badge">RANGER</span>
+            <h3 class="card-title">Kaelen</h3>
+            <p class="card-desc">Thợ săn thung lũng với tốc độ di chuyển linh hoạt và khả năng tung ra những đòn chí mạng chuẩn xác.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHẦN 3: NEWS -->
+    <section id="news" class="page-section">
+      <div class="content-container">
+        <span class="section-tag">02 / CHRONICLES</span>
+        <h2 class="section-heading">LATEST NEWS</h2>
+        <div class="grid-3">
+          <div class="card">
+            <span class="card-badge">ANNOUNCEMENT</span>
+            <h3 class="card-title">Mở cửa thử nghiệm Closed Beta</h3>
+            <p class="card-desc">Hành trình khám phá vùng đất Ascendant chính thức mở đăng ký cho những nhà thám hiểm đầu tiên.</p>
+          </div>
+          <div class="card">
+            <span class="card-badge">UPDATES</span>
+            <h3 class="card-title">Bản cập nhật đồ họa v1.2</h3>
+            <p class="card-desc">Nâng cấp hiệu ứng mây mù động, ánh sáng bình minh và tối ưu hóa khung hình trên mọi cấu hình.</p>
+          </div>
+          <div class="card">
+            <span class="card-badge">EVENT</span>
+            <h3 class="card-title">Sự kiện Chinh phục Đỉnh Cổ Ngữ</h3>
+            <p class="card-desc">Tham gia giải mã các ký tự cổ khắc trên vách núi để nhận trang bị độc quyền giới hạn.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHẦN 4: DOWNLOAD -->
+    <section id="download" class="page-section">
+      <div class="content-container">
+        <span class="section-tag">03 / LAUNCHER</span>
+        <h2 class="section-heading">DOWNLOAD</h2>
+        <div class="download-box">
+          <div>
+            <h3 class="card-title" style="font-size: 22px;">Ascendant Client Launcher (v1.0.0)</h3>
+            <p class="card-desc">Hỗ trợ Windows 10/11 (64-bit) • Dung lượng cài đặt: 5 GB</p>
+          </div>
+          <a href="#" class="btn-solid-black"><i class="fa-solid fa-download" style="margin-right: 8px;"></i> TẢI XUỐNG NGAY</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHẦN 5: SUPPORT -->
+    <section id="support" class="page-section" style="border-bottom: none;">
+      <div class="content-container">
+        <span class="section-tag">04 / HELP CENTER</span>
+        <h2 class="section-heading">SUPPORT</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="card-title">Cấu hình tối thiểu</h3>
+            <p class="card-desc">CPU: intel core i5-7200u</p>
+            <p class="card-desc">GPU: intel hd graphics 620</p>
+            <p class="card-desc">RAM: 8GB</p>
+            <p class="card-desc">30GB dung lượng trống</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Cấu hình khuyến nghị</h3>
+            <p class="card-desc">CPU: intel core i5-12400f</p>
+            <p class="card-desc">GPU: RTX 3060Ti hoặc RX 6600 XT</p>
+            <p class="card-desc">RAM: 16GB</p>
+            <p class="card-desc">30GB dung lượng trống</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Báo lỗi & Góp ý</h3>
+            <p class="card-desc">Gửi phản hồi trực tiếp cho đội ngũ phát triển qua kênh Discord hoặc Email hỗ trợ.</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Câu hỏi thường gặp (FAQ)</h3>
+            <p class="card-desc">Giải đáp nhanh các thắc mắc về tài khoản, cài đặt Launcher và kết nối máy chủ.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <svg class="footer-logo" viewBox="0 0 24 24">
+          <path d="M12 2L2 22h5l3.5-7h3l3.5 7h5L12 2zm0 6l2 4h-4l2-4z"/>
+        </svg>
+        <p class="footer-slogan">MADE WITH HOPES AND DREAMS</p>
+        <p class="footer-copyright">© bản quyền thuộc về anhtuandevzz</p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-title">CONTENT</h4>
+        <ul class="footer-links">
+          <li><a href="#download">Download</a></li>
+          <li><a href="#download">Launcher</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-title">CONTACT</h4>
+        <ul class="footer-links">
+          <li><a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f" style="width: 16px;"></i> Facebook</a></li>
+          <li><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok" style="width: 16px;"></i> TikTok</a></li>
+          <li><a href="https://discord.com" target="_blank"><i class="fa-brands fa-discord" style="width: 16px;"></i> Discord</a></li>
+          <li><i class="fa-regular fa-envelope" style="width: 16px;"></i> Email: anhtuan021207@gmail.com</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= THANH CUỘN HIỂN THỊ PHẦN TRĂM BÊN PHẢI ================= -->
+  <div class="scroll-track" id="scrollTrack">
+    <div class="scroll-thumb" id="scrollThumb">
+      <span class="scroll-number" id="scrollNumber">0%</span>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // 1. HIỆU ỨNG NGHIÊNG 3D BANNER
+    const banner = document.getElementById('heroBanner');
+    banner.addEventListener('mousemove', (e) => {
+      const rect = banner.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const maxTilt = 4;
+      const rotateX = -((y - centerY) / centerY) * maxTilt;
+      const rotateY = ((x - centerX) / centerX) * maxTilt;
+      banner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    banner.addEventListener('mouseleave', () => {
+      banner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      banner.style.transition = 'transform 0.5s ease-out';
+    });
+
+    banner.addEventListener('mouseenter', () => {
+      banner.style.transition = 'transform 0.1s ease-out';
+    });
+
+    // 2. XỬ LÝ THANH CUỘN PHẦN TRĂM & SCROLL SPY
+    const track = document.getElementById('scrollTrack');
+    const thumb = document.getElementById('scrollThumb');
+    const number = document.getElementById('scrollNumber');
+    const siteHeader = document.getElementById('siteHeader');
+    const sections = document.querySelectorAll('.page-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    let scrollTimeout;
+    let isDragging = false;
+
+    function triggerStopHighlight() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        track.classList.remove('is-scrolling');
+        track.classList.add('is-highlighting');
+        setTimeout(() => {
+          track.classList.remove('is-highlighting');
+        }, 500);
+      }, 150);
+    }
+
+    function updateScrollUI() {
+      const scrollTop = window.scrollY;
+      siteHeader.classList.toggle('is-scrolled', scrollTop > 10);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      number.textContent = Math.round(percent) + '%';
+
+      const maxTop = window.innerHeight - thumb.offsetHeight;
+      const thumbPosition = (percent / 100) * Math.max(0, maxTop);
+      thumb.style.transform = `translateY(${thumbPosition}px)`;
+
+      let currentSectionId = 'home';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (scrollTop >= sectionTop) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSectionId}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      updateScrollUI();
+      if (!isDragging) {
+        track.classList.remove('is-highlighting');
+        track.classList.add('is-scrolling');
+        triggerStopHighlight();
+      }
+    });
+
+    thumb.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      isDragging = true;
+      thumb.setPointerCapture(e.pointerId);
+      track.classList.remove('is-highlighting');
+      track.classList.add('is-dragging');
+      document.documentElement.style.scrollBehavior = 'auto';
+    });
+
+    thumb.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const trackRect = track.getBoundingClientRect();
+      const maxTop = trackRect.height - thumb.offsetHeight;
+      if (maxTop <= 0) return;
+      let newTop = e.clientY - trackRect.top - thumb.offsetHeight / 2;
+      newTop = Math.min(maxTop, Math.max(0, newTop));
+      const ratio = newTop / maxTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo(0, ratio * docHeight);
+    });
+
+    function stopDragging(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      if (e && thumb.hasPointerCapture(e.pointerId)) {
+        thumb.releasePointerCapture(e.pointerId);
+      }
+      track.classList.remove('is-dragging');
+      document.documentElement.style.scrollBehavior = 'smooth';
+      triggerStopHighlight();
+    }
+
+    thumb.addEventListener('pointerup', stopDragging);
+    thumb.addEventListener('pointercancel', stopDragging);
+
+    updateScrollUI();
+    (function initCatPreloader() {
+  const spriteEl = document.getElementById('catSprite');
+  const preloader = document.getElementById('pagePreloader');
+  if (!spriteEl || !preloader) return;
+
+  const cols = 4;
+  const rows = 5;
+  const totalFrames = 19; // 4x4 + 3 frame ở hàng 5 (bỏ qua ô trống cuối)
+  let currentFrame = 0;
+
+  // Tốc độ khung hình (ms/frame): 110ms ~ 9 FPS (hợp với animation chớp mắt/nhịp thở pixel)
+  const frameInterval = setInterval(() => {
+    const col = currentFrame % cols;
+    const row = Math.floor(currentFrame / cols);
+
+    const xPercent = cols > 1 ? (col / (cols - 1)) * 100 : 0;
+    const yPercent = rows > 1 ? (row / (rows - 1)) * 100 : 0;
+
+    spriteEl.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+    currentFrame = (currentFrame + 1) % totalFrames;
+  }, 110);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      preloader.classList.add('is-hidden');
+      setTimeout(() => {
+        clearInterval(frameInterval);
+      }, 450);
+    }, 350);
+  });
+})();
+  </script>
+
+</body>
+</html>
