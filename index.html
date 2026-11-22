@@ -1477,6 +1477,7 @@
       });
     })();
     // 5. ĐIỀU KHIỂN CHỌN, CHUYỂN ĐỔI & PHÁT 3 VIDEO EXPLORATIONS
+    // 5. ĐIỀU KHIỂN CHỌN, CHUYỂN ĐỔI & PHÁT 3 VIDEO EXPLORATIONS
     (function initExplorationsVideos() {
       const showcase = document.querySelector('.exp-video-showcase');
       if (!showcase) return;
@@ -1484,7 +1485,19 @@
       const slots = Array.from(showcase.querySelectorAll('.exp-video-slot'));
       const videos = slots.map((slot) => slot.querySelector('video'));
       let activeIndex = null;
+      let hoverIndex = null;
       let isTransitioning = false;
+      let userPausedManually = false;
+
+      function ensurePlay(vid) {
+        if (!vid) return;
+        vid.muted = true;
+        userPausedManually = false;
+        const p = vid.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {});
+        }
+      }
 
       function stopAllExcept(keepIndex) {
         videos.forEach((vid, idx) => {
@@ -1498,6 +1511,8 @@
 
       function resetShowcase() {
         activeIndex = null;
+        hoverIndex = null;
+        userPausedManually = false;
         showcase.classList.remove('focus-1', 'focus-2', 'focus-3');
         slots.forEach((slot, idx) => {
           slot.classList.remove('is-selected');
@@ -1511,6 +1526,7 @@
 
       function focusAndPlay(index) {
         if (index < 0 || index >= slots.length) return;
+        const isSameVideo = activeIndex === index;
         activeIndex = index;
         isTransitioning = true;
 
@@ -1524,51 +1540,62 @@
         stopAllExcept(index);
 
         const targetVideo = videos[index];
-        if (targetVideo) {
-          targetVideo.muted = true;
-          const p = targetVideo.play();
-          if (p && typeof p.catch === 'function') {
-            p.catch(() => {});
-          }
+        // Nếu đang autoplay hoặc mới chuyển sang chọn video này -> luôn giữ phát khi nhấp chọn
+        if (targetVideo && (isSameVideo || hoverIndex === index || targetVideo.paused || !targetVideo.paused)) {
+          ensurePlay(targetVideo);
+          // Phòng trường hợp trình duyệt xử lý click toggle pause ngay sau event click
+          requestAnimationFrame(() => {
+            if (activeIndex === index && targetVideo.paused && !userPausedManually) {
+              ensurePlay(targetVideo);
+            }
+          });
         }
 
-        // Nhả cờ chuyển bố cục sau khi CSS transition chạy xong để tránh click/hover nhầm
         setTimeout(() => {
           isTransitioning = false;
         }, 420);
       }
 
       slots.forEach((slot, idx) => {
+        const vid = videos[idx];
+
         slot.addEventListener('click', (e) => {
           e.stopPropagation();
           focusAndPlay(idx);
         });
 
-        // Chỉ phát khi rê chuột vào lúc CHƯA chọn video nào
         slot.addEventListener('pointerenter', () => {
-          if (activeIndex === null && !isTransitioning) {
-            const vid = videos[idx];
-            if (!vid) return;
+          hoverIndex = idx;
+          if (activeIndex === null && !isTransitioning && vid) {
             stopAllExcept(idx);
-            vid.muted = true;
-            const p = vid.play();
-            if (p && typeof p.catch === 'function') {
-              p.catch(() => {});
-            }
+            ensurePlay(vid);
           }
         });
-      });
 
-      // Đồng bộ nếu người dùng bấm trực tiếp nút Play trên thanh <video controls>
-      videos.forEach((vid, idx) => {
-        if (!vid) return;
-        vid.addEventListener('play', () => {
-          stopAllExcept(idx);
+        slot.addEventListener('pointerleave', () => {
+          if (hoverIndex === idx) {
+            hoverIndex = null;
+          }
         });
+
+        if (vid) {
+          // Nếu người dùng bấm nút pause chủ động khi không vừa click chọn khung video
+          vid.addEventListener('pause', () => {
+            if (!isTransitioning && activeIndex === idx && !vid.ended) {
+              userPausedManually = true;
+            }
+          });
+
+          vid.addEventListener('play', () => {
+            userPausedManually = false;
+            stopAllExcept(idx);
+          });
+        }
       });
 
       // Rời chuột khỏi vùng chứa 3 video -> quay về định dạng ban đầu
       showcase.addEventListener('mouseleave', () => {
+        hoverIndex = null;
         if (activeIndex !== null && !document.fullscreenElement) {
           resetShowcase();
         }
