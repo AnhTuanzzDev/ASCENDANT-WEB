@@ -815,3 +815,19 @@ body {
     padding: 32px 22px;
   }
 }
+.logo-icon {
+      height: 36px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .footer-logo {
+      height: 64px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
