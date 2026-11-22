@@ -103,6 +103,7 @@
       text-transform: uppercase;
       background-color: transparent;
       transition: background-color 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
     }
 
     .nav-link:hover,
@@ -327,7 +328,181 @@
       margin-bottom: 35px;
       letter-spacing: 2px;
     }
+    
+    /* ================= EXPLORATIONS SLIDESHOW (CĂN GIỮA + 2 MŨI TÊN + 4 DOTS TRẢI ĐỀU) ================= */
+    /* ================= EXPLORATIONS SLIDESHOW (2 MŨI TÊN + 4 DOTS TRÒN ĐỀU BỀ NGANG ẢNH) ================= */
+    .exp-wrapper {
+      --exp-arrow-icon-size: 36px; /* Tùy chỉnh kích thước mũi tên < > tại đây */
+      --exp-dot-size: 14px;        /* Đường kính chấm tròn (luôn giữ bằng nhau để là hình tròn) */
+      --exp-dot-color: #d4af37;    /* Màu đồng nhất cho 2 mũi tên và 4 dots */
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
+    .exp-stage-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 100px;
+    }
+
+    /* 2 nút mũi tên không viền khung, cùng màu với viền 4 dots */
+    .exp-arrow-btn {
+      width: auto;
+      height: auto;
+      padding: 6px;
+      border: none;
+      background: transparent;
+      color: var(--exp-dot-color);
+      font-size: var(--exp-arrow-icon-size);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .exp-arrow-btn:hover {
+      opacity: 0.8;
+      transform: scale(1.12);
+    }
+
+    .exp-arrow-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Cột chứa ảnh + hàng 4 dots căn đều theo bề ngang tấm ảnh */
+    .exp-media-column {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #eae9e4;
+      border: 1px solid #d6d5ce;
+      overflow: hidden;
+    }
+
+    .exp-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transform: translateX(0%);
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .exp-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+    }
+
+    .exp-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 4 hình tròn nhỏ căn đều khoảng cách theo bề ngang tấm ảnh */
+    .exp-dots-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 16px;
+      padding: 0 8%;
+    }
+
+    .exp-dot-btn {
+      width: var(--exp-dot-size);
+      height: var(--exp-dot-size);
+      flex: 0 0 var(--exp-dot-size);
+      border-radius: 50%;
+      border: 2px solid var(--exp-dot-color);
+      background-color: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: background-color 0.25s ease, transform 0.2s ease;
+    }
+
+    .exp-dot-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* Khi được chọn hoặc slide chuyển tới: tô đầy bên trong bằng đúng màu viền */
+    .exp-dot-btn.is-active {
+      background-color: var(--exp-dot-color);
+    }
+  /* ================= EXPLORATIONS 3-VIDEO ROW & POINTED DIVIDERS ================= */
+    .exp-video-showcase {
+      --exp-divider-color: #111111;
+      --exp-divider-thickness: 2px;
+      --exp-divider-tip: 14px; /* Độ dài phần nhọn ở mỗi đầu line */
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: stretch;
+      width: 100%;
+      margin-top: 56px;
+    }
+
+    .exp-video-slot {
+      min-width: 0;
+      padding: 0 22px;
+    }
+
+    .exp-video-slot:first-child {
+      padding-left: 0;
+    }
+
+    .exp-video-slot:last-child {
+      padding-right: 0;
+    }
+
+    .exp-video-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #eae9e4;
+      border: 1px solid #d6d5ce;
+      overflow: hidden;
+    }
+
+    .exp-video-box video,
+    .exp-video-box iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: none;
+      display: block;
+    }
+
+    /* Đường kẻ dọc mỏng có 2 đầu nhọn nằm giữa 2 video */
+    .exp-pointed-line {
+      width: var(--exp-divider-thickness);
+      min-height: 120px;
+      align-self: stretch;
+      background-color: var(--exp-divider-color);
+      clip-path: polygon(
+        50% 0%,
+        100% var(--exp-divider-tip),
+        100% calc(100% - var(--exp-divider-tip)),
+        50% 100%,
+        0% calc(100% - var(--exp-divider-tip)),
+        0% var(--exp-divider-tip)
+      );
+    }
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -548,7 +723,7 @@
       font-weight: 600;
     }
 
-    @media (max-width: 768px) {
+   @media (max-width: 768px) {
       .grid-3, .footer-container {
         grid-template-columns: 1fr;
       }
@@ -563,61 +738,94 @@
       .banner-title {
         font-size: 3rem;
       }
+      .exp-wrapper {
+        --exp-arrow-icon-size: 22px;
+        --exp-dot-size: 12px;
+      }
+      .exp-stage-row {
+        gap: 10px;
+      }
+      .exp-dots-bar {
+        padding: 0 4%;
+      }
+      .exp-video-showcase {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-top: 40px;
+      }
+      .exp-video-slot {
+        padding: 0;
+      }
+      .exp-pointed-line {
+        width: 100%;
+        height: var(--exp-divider-thickness);
+        min-height: var(--exp-divider-thickness);
+        clip-path: polygon(
+          0% 50%,
+          var(--exp-divider-tip) 0%,
+          calc(100% - var(--exp-divider-tip)) 0%,
+          100% 50%,
+          calc(100% - var(--exp-divider-tip)) 100%,
+          var(--exp-divider-tip) 100%
+        );
+      }
     }
+
     .page-preloader {
-  position: fixed;
-  inset: 0;
-  background-color: #f4f4f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
+      position: fixed;
+      inset: 0;
+      background-color: #f4f4f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
 
-.page-preloader.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
+    .page-preloader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-.preloader-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
+    .preloader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
 
-/* Kích thước khung hiển thị 1 frame (nhân 2x cho sắc nét trên màn hình) */
-.cat-sprite {
-  width: 96px;
-  height: 112px;
-  background-image: url('https://i.postimg.cc/MTG4NMnr/black.png');
-  background-repeat: no-repeat;
-  /* 4 cột -> 400%, 5 hàng -> 500% */
-  background-size: 400% 500%;
-  background-position: 0% 0%;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
+    /* Kích thước khung hiển thị 1 frame (nhân 2x cho sắc nét trên màn hình) */
+    .cat-sprite {
+      width: 96px;
+      height: 112px;
+      background-image: url('https://i.postimg.cc/MTG4NMnr/black.png');
+      background-repeat: no-repeat;
+      /* 4 cột -> 400%, 5 hàng -> 500% */
+      background-size: 400% 500%;
+      background-position: 0% 0%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
 
-.preloader-text {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  color: #111111;
-}
+    .preloader-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: #111111;
+    }
   </style>
 </head>
 <body>
-    <!-- PRELOADER SPRITE SHEET MÈO ĐEN -->
-<div class="page-preloader" id="pagePreloader">
-  <div class="preloader-inner">
-    <div class="cat-sprite" id="catSprite" role="img" aria-label="Loading cat animation"></div>
-    <span class="preloader-text">LOADING...</span>
+  <!-- PRELOADER SPRITE SHEET MÈO ĐEN -->
+  <div class="page-preloader" id="pagePreloader">
+    <div class="preloader-inner">
+      <div class="cat-sprite" id="catSprite" role="img" aria-label="Loading cat animation"></div>
+      <span class="preloader-text">LOADING...</span>
+    </div>
   </div>
-</div>
+
   <!-- ================= HEADER ================= -->
   <header class="header" id="siteHeader">
     <div class="header-left">
@@ -630,6 +838,7 @@
       <ul class="nav-list">
         <li class="nav-item"><a href="#home" class="nav-link active">HOME</a></li>
         <li class="nav-item"><a href="#character" class="nav-link">CHARACTER</a></li>
+        <li class="nav-item"><a href="#explorations" class="nav-link">EXPLORATIONS</a></li>
         <li class="nav-item dropdown">
           <a href="#news" class="nav-link">
             NEWS <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
@@ -688,6 +897,82 @@
             <span class="card-badge">RANGER</span>
             <h3 class="card-title">Kaelen</h3>
             <p class="card-desc">Thợ săn thung lũng với tốc độ di chuyển linh hoạt và khả năng tung ra những đòn chí mạng chuẩn xác.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHẦN 2.5: EXPLORATIONS (NẰM DƯỚI CHARACTER) -->
+    <section id="explorations" class="page-section">
+      <div class="content-container">
+        <span class="section-tag">01.5 / WORLD SHOWCASE</span>
+        <h2 class="section-heading">EXPLORATIONS</h2>
+
+        <div class="exp-wrapper">
+          
+          <div class="exp-stage-row">
+            <button type="button" class="exp-arrow-btn" id="expPrevBtn" aria-label="Ảnh trước">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="exp-media-column">
+              <div class="exp-viewport">
+                <div class="exp-track" id="expTrack">
+                  <!-- Thay direct URL từng ảnh bất cứ lúc nào -->
+                  <div class="exp-slide">
+                    <img src="https://i.postimg.cc/SxPtZC3s/Gemini-Generated-Image-q2i9kjq2i9kjq2i9.png" alt="Exploration Slide 1">
+                  </div>
+                  <div class="exp-slide">
+                    <img src="https://i.postimg.cc/rptZ7z2N/Gemini-Generated-Image-oizcmoizcmoizcmo.png" alt="Exploration Slide 2">
+                  </div>
+                  <div class="exp-slide">
+                    <img src="https://i.postimg.cc/sgxN9wnN/Gemini-Generated-Image-chbih1chbih1chbi.png" alt="Exploration Slide 3">
+                  </div>
+                  <div class="exp-slide">
+                    <img src="https://i.postimg.cc/W1zH6X9C/Gemini-Generated-Image-ixvhvixvhvixvhvi.png" alt="Exploration Slide 4">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4 dots trải đều bằng bề ngang tấm ảnh -->
+              <div class="exp-dots-bar" id="expDotsBar">
+                <button type="button" class="exp-dot-btn is-active" data-index="0" aria-label="Ảnh 1"></button>
+                <button type="button" class="exp-dot-btn" data-index="1" aria-label="Ảnh 2"></button>
+                <button type="button" class="exp-dot-btn" data-index="2" aria-label="Ảnh 3"></button>
+                <button type="button" class="exp-dot-btn" data-index="3" aria-label="Ảnh 4"></button>
+              </div>
+            </div>
+
+            <button type="button" class="exp-arrow-btn" id="expNextBtn" aria-label="Ảnh kế tiếp">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        <!-- 3 KHUNG VIDEO CHIA ĐỀU NGANG + LINE DỌC 2 ĐẦU NHỌN -->
+        <div class="exp-video-showcase">
+          <!-- Khung Video 1 (Để trống: thay nội dung bên trong bằng <video src="LINK_VIDEO_1" controls muted loop playsinline></video> hoặc <iframe>) -->
+          <div class="exp-video-slot">
+            <div class="exp-video-box">
+              <video src="e1.mp4" controls muted loop playsinline preload="metadata"></video>
+            </div>
+          </div>
+
+          <div class="exp-pointed-line" aria-hidden="true"></div>
+
+          <!-- Khung Video 2 (Để trống: thay nội dung bên trong bằng <video src="LINK_VIDEO_2" controls muted loop playsinline></video> hoặc <iframe>) -->
+          <div class="exp-video-slot">
+            <div class="exp-video-box">
+              <video src="e2.mp4" controls muted loop playsinline preload="metadata"></video>
+            </div>
+          </div>
+
+          <div class="exp-pointed-line" aria-hidden="true"></div>
+
+          <!-- Khung Video 3 (Để trống: thay nội dung bên trong bằng <video src="LINK_VIDEO_3" controls muted loop playsinline></video> hoặc <iframe>) -->
+          <div class="exp-video-slot">
+            <div class="exp-video-box">
+              <video src="e3.mp4" controls muted loop playsinline preload="metadata"></video>
+            </div>
           </div>
         </div>
       </div>
@@ -830,7 +1115,64 @@
       banner.style.transition = 'transform 0.1s ease-out';
     });
 
-    // 2. XỬ LÝ THANH CUỘN PHẦN TRĂM & SCROLL SPY
+    // 2. SLIDESHOW EXPLORATIONS (4 ẢNH, MỖI 4 GIÂY LƯỚT SANG ẢNH KẾ TIẾP / VỀ ẢNH 1)
+    (function initExplorationsSlider() {
+      const trackEl = document.getElementById('expTrack');
+      const slides = trackEl ? trackEl.querySelectorAll('.exp-slide') : [];
+      const dots = document.querySelectorAll('#expDotsBar .exp-dot-btn');
+      const prevBtn = document.getElementById('expPrevBtn');
+      const nextBtn = document.getElementById('expNextBtn');
+      if (!trackEl || !slides.length) return;
+
+      const total = slides.length;
+      let currentIndex = 0;
+      const intervalMs = 4000;
+      let autoSlideTimer;
+
+      function renderSlide(index) {
+        currentIndex = ((index % total) + total) % total;
+        trackEl.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('is-active', idx === currentIndex);
+        });
+      }
+
+      function restartTimer() {
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = setInterval(() => {
+          renderSlide(currentIndex + 1);
+        }, intervalMs);
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          renderSlide(currentIndex - 1);
+          restartTimer();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          renderSlide(currentIndex + 1);
+          restartTimer();
+        });
+      }
+
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const targetIdx = Number(dot.dataset.index);
+          if (!Number.isNaN(targetIdx)) {
+            renderSlide(targetIdx);
+            restartTimer();
+          }
+        });
+      });
+
+      renderSlide(0);
+      restartTimer();
+    })();
+
+    // 3. XỬ LÝ THANH CUỘN PHẦN TRĂM & SCROLL SPY
     const track = document.getElementById('scrollTrack');
     const thumb = document.getElementById('scrollThumb');
     const number = document.getElementById('scrollNumber');
@@ -925,37 +1267,39 @@
     thumb.addEventListener('pointercancel', stopDragging);
 
     updateScrollUI();
+
+    // 4. PRELOADER MÈO ĐEN
     (function initCatPreloader() {
-  const spriteEl = document.getElementById('catSprite');
-  const preloader = document.getElementById('pagePreloader');
-  if (!spriteEl || !preloader) return;
+      const spriteEl = document.getElementById('catSprite');
+      const preloader = document.getElementById('pagePreloader');
+      if (!spriteEl || !preloader) return;
 
-  const cols = 4;
-  const rows = 5;
-  const totalFrames = 19; // 4x4 + 3 frame ở hàng 5 (bỏ qua ô trống cuối)
-  let currentFrame = 0;
+      const cols = 4;
+      const rows = 5;
+      const totalFrames = 19; // 4x4 + 3 frame ở hàng 5 (bỏ qua ô trống cuối)
+      let currentFrame = 0;
 
-  // Tốc độ khung hình (ms/frame): 110ms ~ 9 FPS (hợp với animation chớp mắt/nhịp thở pixel)
-  const frameInterval = setInterval(() => {
-    const col = currentFrame % cols;
-    const row = Math.floor(currentFrame / cols);
+      // Tốc độ khung hình (ms/frame): 110ms ~ 9 FPS (hợp với animation chớp mắt/nhịp thở pixel)
+      const frameInterval = setInterval(() => {
+        const col = currentFrame % cols;
+        const row = Math.floor(currentFrame / cols);
 
-    const xPercent = cols > 1 ? (col / (cols - 1)) * 100 : 0;
-    const yPercent = rows > 1 ? (row / (rows - 1)) * 100 : 0;
+        const xPercent = cols > 1 ? (col / (cols - 1)) * 100 : 0;
+        const yPercent = rows > 1 ? (row / (rows - 1)) * 100 : 0;
 
-    spriteEl.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
-    currentFrame = (currentFrame + 1) % totalFrames;
-  }, 110);
+        spriteEl.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+        currentFrame = (currentFrame + 1) % totalFrames;
+      }, 110);
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      preloader.classList.add('is-hidden');
-      setTimeout(() => {
-        clearInterval(frameInterval);
-      }, 450);
-    }, 350);
-  });
-})();
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          preloader.classList.add('is-hidden');
+          setTimeout(() => {
+            clearInterval(frameInterval);
+          }, 450);
+        }, 350);
+      });
+    })();
   </script>
 
 </body>
