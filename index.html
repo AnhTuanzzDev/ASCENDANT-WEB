@@ -815,6 +815,39 @@
       letter-spacing: 2.5px;
       color: #111111;
     }
+    /* ================= NÚT TRÊN BANNER (HOVER ĐẢO MÀU + VIỀN & ÁNH SÁNG VÀNG) ================= */
+    .banner-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 24px;
+      padding: 14px 36px;
+      border-radius: 6px;
+      background-color: #d3e5f2;
+      color: #0b0e12;
+      border: 2px solid #d3e5f2;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    }
+
+    .banner-cta-btn:hover {
+      background-color: rgba(10, 14, 20, 0.72);
+      color: #d3e5f2;
+      border-color: #d3e5f2;
+      box-shadow: 0 0 18px rgba(211, 229, 242, 0.45), inset 0 0 8px rgba(211, 229, 242, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .banner-cta-btn:active {
+      transform: translateY(1px);
+    }
   </style>
 </head>
 <body>
@@ -870,9 +903,10 @@
           <div class="banner-bg-2"></div>
           <div class="banner-overlay"></div>
           <div class="banner-content">
-            <h1 class="banner-title">ASCENDANT</h1>
-            <p class="banner-subtitle">A new journey awaits</p>
-          </div>
+  <h1 class="banner-title">ASCENDANT</h1>
+  <p class="banner-subtitle">A new journey awaits</p>
+  <a href="signin.html" class="banner-cta-btn">PRE-REGISTER NOW</a>
+</div>
         </a>
       </div>
     </section>
