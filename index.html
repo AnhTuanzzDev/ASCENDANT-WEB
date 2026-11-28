@@ -1599,6 +1599,28 @@
         }
       });
     })();
+    // 6. CUỘN TỚI SECTION KHI BẤM TAB NHƯNG KHÔNG TẠO THÊM LỊCH SỬ BACK/UNDO
+    (function initCleanTabScroll() {
+      const headerLinks = document.querySelectorAll('.header a[href^="#"]');
+      if (!headerLinks.length) return;
+
+      headerLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const targetId = link.getAttribute('href');
+          if (!targetId || targetId === '#') return;
+
+          const targetSection = document.querySelector(targetId);
+          if (!targetSection) return;
+
+          e.preventDefault();
+          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          navLinks.forEach((item) => {
+            item.classList.toggle('active', item.getAttribute('href') === targetId);
+          });
+        });
+      });
+    })();
   </script>
 
 </body>
